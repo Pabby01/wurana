@@ -50,7 +50,7 @@ const HeroCarousel = () => {
       style={{ y }}
     >
       <div className="absolute inset-0 flex items-center justify-center">
-        <div
+        <motion.div
           ref={containerRef}
           className="flex gap-8 absolute"
           style={{
@@ -83,7 +83,7 @@ const HeroCarousel = () => {
           ))}
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
