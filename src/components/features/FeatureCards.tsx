@@ -65,13 +65,22 @@ const FeatureCards = () => {
   }, []);
 
   return (
-    <div className="py-20 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-black">
-      <div className="container mx-auto px-4">
+    <div className="py-20 bg-gradient-to-b from-purple-50 via-purple-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-black overflow-hidden">
+      <div className="container mx-auto px-4 relative">
+        <motion.div
+          className="absolute inset-0 -z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          transition={{ duration: 1 }}
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.15), transparent 70%)'
+          }}
+        />
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl font-bold text-center mb-16 text-gray-900 dark:text-white"
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"
         >
           Why Choose Wurana?
         </motion.h2>
@@ -84,12 +93,13 @@ const FeatureCards = () => {
             <motion.div
               key={index}
               whileHover={{ scale: 1.05 }}
-              className="relative p-6 rounded-2xl backdrop-blur-lg bg-white/30 dark:bg-gray-800/30
-                        border border-white/20 dark:border-gray-700/20 shadow-xl
-                        hover:shadow-purple-500/20 transition-all duration-300"
+              className="relative p-8 rounded-3xl backdrop-blur-xl bg-white/10 dark:bg-gray-800/10
+                        border border-white/30 dark:border-gray-700/30 shadow-2xl
+                        hover:shadow-purple-500/30 hover:border-purple-500/50 transition-all duration-500"
               style={{
-                background: 'linear-gradient(145deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)',
-                backdropFilter: 'blur(10px)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%)',
+                backdropFilter: 'blur(12px)',
+                transform: `perspective(1000px) rotateX(${index % 2 ? 5 : -5}deg) rotateY(${index % 2 ? -5 : 5}deg)`,
               }}
             >
               <div className="text-4xl mb-4">{feature.icon}</div>

@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import gsap from 'gsap';
 
 interface ArtisanImage {
   src: string;
@@ -18,42 +19,55 @@ const artisanImages: ArtisanImage[] = [
 ];
 
 const HeroCarousel = () => {
-  const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   useEffect(() => {
-    const animateCarousel = async () => {
-      await controls.start({
-        x: '-100%',
-        transition: {
-          duration: 20,
-          ease: 'linear',
-          repeat: Infinity,
-        },
-      });
-    };
+    const images = containerRef.current?.children;
+    if (!images) return;
 
-    animateCarousel();
-  }, [controls]);
+    gsap.to(images, {
+      duration: 20,
+      xPercent: -100,
+      ease: 'none',
+      repeat: -1,
+    });
+
+    gsap.to(images, {
+      duration: 2,
+      y: 20,
+      stagger: 0.1,
+      ease: 'power2.inOut',
+      yoyo: true,
+      repeat: -1,
+    });
+  }, []);
 
   return (
-    <div className="w-full h-[500px] overflow-hidden relative bg-gradient-to-b from-purple-900 to-black">
+    <motion.div 
+      className="w-full h-[600px] overflow-hidden relative bg-gradient-to-b from-purple-900 via-purple-800 to-black"
+      style={{ y }}
+    >
       <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div
+        <div
           ref={containerRef}
-          className="flex gap-4 absolute"
-          animate={controls}
-          style={{ x: '0%' }}
+          className="flex gap-8 absolute"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)'
+          }}
         >
           {[...artisanImages, ...artisanImages].map((image, index) => (
             <motion.div
               key={index}
-              className="relative w-64 h-64 rounded-2xl overflow-hidden transform hover:scale-105 transition-transform"
+              className="relative w-72 h-96 rounded-2xl overflow-hidden transform hover:scale-105 transition-transform"
               style={{
                 perspective: '1000px',
-                transform: `rotateY(${index * 5}deg) translateZ(${Math.abs(Math.sin(index * 0.5)) * 50}px)`,
+                transform: `rotateY(${index * 8}deg) translateZ(${Math.abs(Math.sin(index * 0.8)) * 80}px)`,
               }}
-              whileHover={{ y: -10 }}
+              whileHover={{ y: -20, scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Image
                 src={image.src}

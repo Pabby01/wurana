@@ -2,8 +2,9 @@
 
 import { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, useTexture } from '@react-three/drei';
+import { Sphere, useTexture, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { motion } from 'framer-motion-3d';
 
 interface ArtisanMarker {
   position: [number, number, number];
@@ -32,18 +33,33 @@ const Earth = () => {
     }
   });
 
+  const [earthMap, normalMap, specularMap] = useTexture([
+    '/textures/earth_daymap.jpg',
+    '/textures/earth_normal_map.jpg',
+    '/textures/earth_specular_map.jpg'
+  ]);
+
   return (
     <group>
-      <mesh ref={earthRef}>
+      <motion.mesh
+        ref={earthRef}
+        animate={{
+          rotateY: 2 * Math.PI,
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: 'linear',
+        }}
+      >
         <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial
-          color="#4B9CD3"
-          metalness={0.4}
-          roughness={0.7}
-          opacity={0.8}
-          transparent
+        <meshPhongMaterial
+          map={earthMap}
+          normalMap={normalMap}
+          specularMap={specularMap}
+          shininess={5}
         />
-      </mesh>
+      </motion.mesh>
 
       <group ref={markersRef}>
         {artisans.map((artisan, index) => (
