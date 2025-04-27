@@ -1,24 +1,29 @@
 'use client';
 
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import Earth from './Earth';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 
-const Scene = () => {
+const Canvas = dynamic(
+  () => import('@react-three/fiber').then((mod) => mod.Canvas),
+  { ssr: false }
+);
+
+const OrbitControls = dynamic(
+  () => import('@react-three/drei').then((mod) => mod.OrbitControls),
+  { ssr: false }
+);
+
+const Earth = dynamic(() => import('./Earth'), { ssr: false });
+
+export default function Scene() {
   return (
-    <div className="w-full h-[600px] relative">
-      <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 0, 6]} />
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          minPolarAngle={Math.PI / 2.5}
-          maxPolarAngle={Math.PI / 1.5}
-        />
-        <Earth />
-      </Canvas>
+    <div className="h-[600px] w-full">
+      <Suspense fallback={<div>Loading...</div>}>
+        <Canvas>
+          <OrbitControls enableZoom={false} />
+          <Earth />
+        </Canvas>
+      </Suspense>
     </div>
   );
-};
-
-export default Scene;
+}
