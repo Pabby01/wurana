@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import HeroCarousel from '@/components/hero/HeroCarousel';
 import FeatureCards from '@/components/features/FeatureCards';
-import Scene from '@/components/3d/Scene';
+
 import WaitlistForm from '@/components/waitlist/WaitlistForm';
 
 export default function Home() {
@@ -51,13 +51,14 @@ export default function Home() {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-5 py-2.5 bg-[#FFC107] text-white rounded-full hover:bg-[#e6ac00] transition-colors flex items-center text-sm uppercase tracking-widest"
+              className="px-5 py-2.5 bg-[#362e17] text-white rounded-full hover:bg-[#e6ac00] transition-colors flex items-center text-sm uppercase tracking-widest"
             >
               <span>Connect Wallet</span>
             </motion.button>
           </div>
         </nav>
       </header>
+      <HeroCarousel></HeroCarousel>
 
       {/* Hero Section - Neutra Style */}
       <section className="relative min-h-screen flex items-center pt-24 pb-16 px-6 overflow-hidden">
@@ -152,7 +153,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
           >
-            <Scene />
+          
           </motion.div>
         </div>
       </section>
